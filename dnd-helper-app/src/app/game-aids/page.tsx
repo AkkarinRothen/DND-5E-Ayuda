@@ -1,40 +1,53 @@
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+
+const gameAidsMarkdown = `
+# Ayudas y Recursos de Juego
+
+Una colección de tablas útiles, listas, enlaces a herramientas externas
+y otros recursos para facilitar tus sesiones de juego.
+
+## Tablas de Encuentros Aleatorios
+Útil para generar encuentros rápidos en diferentes entornos.
+
+### Bosque
+| d6 | Encuentro            |
+|----|----------------------|
+| 1  | 1d4 Goblins          |
+| 2  | 1d2 Lobos            |
+| 3  | 1 Oso Pardo          |
+| 4  | 1d6 Bandidos         |
+| 5  | Un explorador solitario |
+| 6  | Nada                 |
+
+### Mazmorra
+| d6 | Encuentro            |
+|----|----------------------|
+| 1  | 1d4 Esqueletos       |
+| 2  | 1d2 Zombis           |
+| 3  | 1 Ojo Tirano Menor   |
+| 4  | 1d6 Kobolds          |
+| 5  | Trampa de foso       |
+| 6  | Nada                 |
+
+## Lista Completa de Hechizos
+Próximamente: Una base de datos de hechizos con filtros por clase, nivel y escuela.
+
+## Generador de Nombres de PNJ
+Genera nombres aleatorios para personajes no jugadores para inspirarte.
+
+*   **Humanos:** Elara, Borin, Seraphina, Kaelen
+*   **Elfos:** Aerion, Lyra, Faelar, Sylvana
+*   **Enanos:** Thrain, Griselda, Durin, Borghild
+`;
+
 export default function GameAidsPage() {
   return (
-    <div className="py-8">
-      <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-        Ayudas y Recursos de Juego
-      </h2>
-      <p className="text-lg text-gray-700 dark:text-gray-300">
-        Una colección de tablas útiles, listas, enlaces a herramientas externas
-        y otros recursos para facilitar tus sesiones de juego.
-      </p>
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Placeholder Game Aid Cards */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Tablas de Encuentros Aleatorios
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Genera encuentros rápidos para diferentes entornos.
-          </p>
-        </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Lista Completa de Hechizos
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Busca y filtra hechizos por clase, nivel y escuela.
-          </p>
-        </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Generador de Nombres de PNJ
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Obtén inspiración para nombres de personajes no jugadores.
-          </p>
-        </div>
-      </div>
+    <div className="py-8 prose dark:prose-invert">
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+        {gameAidsMarkdown}
+      </ReactMarkdown>
     </div>
   );
 }

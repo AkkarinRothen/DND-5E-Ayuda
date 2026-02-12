@@ -1,43 +1,46 @@
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+
+const notesMarkdown = `
+# Notas de Juego
+
+Aquí encontrarás notas, reglas de la casa, lore y otros detalles importantes para tus campañas de D&D 5.5.
+
+## Reglas de Combate Avanzadas
+Un resumen de las reglas de combate opcionales para una experiencia más táctica.
+
+*   **Flanqueo:** Atacar a un enemigo desde lados opuestos otorga ventaja.
+*   **Puntos de Vigor (Stamina Points):** Un sistema alternativo para gestionar la fatiga en combate.
+*   **Lesiones Graves:** Cuando recibes daño crítico, puedes sufrir una lesión duradera.
+
+## Lore de la Región de Eldoria
+Detalles sobre la historia, facciones y geografía de la región principal de nuestra campaña.
+
+### Historia
+Eldoria fue fundada por los Altos Elfos hace milenios, y su capital, Silverwood, es un testamento a su arquitectura.
+
+### Facciones
+*   **La Guardia de Plata:** Protectores del reino.
+*   **Los Hijos del Bosque:** Grupos druídicos y exploradores que cuidan la naturaleza.
+*   **El Gremio de Mercaderes:** Controlan el comercio y la economía.
+
+## Listado de PNJ Clave
+Información sobre los personajes no jugadores más importantes y sus motivaciones.
+
+| Nombre      | Rol         | Motivación               |
+|-------------|-------------|--------------------------|
+| Elara       | Reina       | Proteger a su pueblo     |
+| Kael        | General     | Gloria y poder           |
+| Lyra        | Erudita     | Descubrir secretos antiguos |
+`;
+
 export default function NotesPage() {
   return (
-    <div className="py-8">
-      <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-        Notas de Juego
-      </h2>
-      <p className="text-lg text-gray-700 dark:text-gray-300">
-        Aquí encontrarás notas, reglas de la casa, lore y otros detalles importantes
-        para tus campañas de D&D 5.5.
-      </p>
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Placeholder Note Cards */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Reglas de Combate Avanzadas
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Un resumen de las reglas de combate opcionales para una experiencia
-            más táctica.
-          </p>
-        </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Lore de la Región de Eldoria
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Detalles sobre la historia, facciones y geografía de la región
-            principal de nuestra campaña.
-          </p>
-        </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Listado de PNJ Clave
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Información sobre los personajes no jugadores más importantes
-            y sus motivaciones.
-          </p>
-        </div>
-      </div>
+    <div className="py-8 prose dark:prose-invert">
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+        {notesMarkdown}
+      </ReactMarkdown>
     </div>
   );
 }
