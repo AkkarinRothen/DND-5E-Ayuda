@@ -1,26 +1,489 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ===== PALETA DE COLORES - TEMA PERGAMINO ===== */
+  --background: #f5ebe0;
+  --foreground: #2b1d0e;
+  --primary: #8b2500;
+  --secondary: #d4af37;
+  --accent: #4a6741;
+  --border: #c9a66b;
+  --card-bg: #fdfaf5;
+  --card-shadow: rgba(43, 29, 14, 0.12);
+  
+  /* ===== COLORES PARA DADOS Y ESTADÍSTICAS ===== */
+  --d20-critical: #ffd700;
+  --d20-success: #10b981;
+  --d20-fail: #ef4444;
+  --stat-boost: #059669;
+  --stat-penalty: #dc2626;
+  --stat-neutral: #6b7280;
+  
+  /* ===== ESPACIADO Y BORDES ===== */
+  --border-radius: 0.5rem;
+  --border-width: 2px;
+  --transition-speed: 0.3s;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ===== TEMA OSCURO - MAZMORRA ===== */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1410;
+    --foreground: #e8dcc8;
+    --primary: #ff6b35;
+    --secondary: #f4d03f;
+    --accent: #6b9e78;
+    --border: #4a3f35;
+    --card-bg: #252018;
+    --card-shadow: rgba(0, 0, 0, 0.5);
+    
+    --d20-critical: #fbbf24;
+    --d20-success: #34d399;
+    --d20-fail: #f87171;
+    --stat-boost: #10b981;
+    --stat-penalty: #ef4444;
+    --stat-neutral: #9ca3af;
   }
 }
 
+/* ===== TIPOGRAFÍA BASE ===== */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Crimson Text', 'Georgia', 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 1.7;
+  transition: background-color var(--transition-speed) ease, 
+              color var(--transition-speed) ease;
+}
+
+/* ===== ENCABEZADOS ESTILO MANUAL D&D ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', 'Georgia', serif;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px var(--card-shadow);
+  transition: color var(--transition-speed) ease;
+}
+
+h1 {
+  font-size: 2.75rem;
+  border-bottom: 3px solid var(--secondary);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--accent);
+  transition: width 0.6s ease;
+}
+
+h1:hover::after {
+  width: 100%;
+}
+
+h2 {
+  font-size: 2.25rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+  color: var(--accent);
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+/* ===== TABLAS ESTILO MANUAL D&D ===== */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin: 1.5rem 0;
+  background: var(--card-bg);
+  box-shadow: 0 4px 6px var(--card-shadow);
+  transition: box-shadow var(--transition-speed) ease;
+}
+
+table:hover {
+  box-shadow: 0 6px 12px var(--card-shadow);
+}
+
+thead {
+  background: linear-gradient(135deg, var(--primary) 0%, #6b1c00 100%);
+}
+
+th {
+  color: var(--card-bg);
+  padding: 1rem;
+  font-weight: 700;
+  text-align: left;
+  font-family: 'Cinzel', 'Georgia', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid rgba(201, 166, 107, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tbody tr {
+  transition: all 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(201, 166, 107, 0.08);
+}
+
+tbody tr:hover {
+  background: rgba(212, 175, 55, 0.2);
+  transform: scale(1.01);
+  box-shadow: 0 2px 8px var(--card-shadow);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Columnas especiales */
+td.stat-value {
+  font-weight: bold;
+  font-family: var(--font-mono);
+  text-align: center;
+  font-size: 1.1em;
+}
+
+td.stat-positive {
+  color: var(--stat-boost);
+}
+
+td.stat-negative {
+  color: var(--stat-penalty);
+}
+
+/* ===== SCROLL PERSONALIZADO ===== */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--border) 0%, var(--primary) 100%);
+  border-radius: 10px;
+  border: 2px solid var(--background);
+  transition: background var(--transition-speed) ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+  cursor: grab;
+}
+
+::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--background);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--background);
+}
+
+/* ===== ANIMACIONES SUTILES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes diceRoll {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  75% { transform: rotate(270deg) scale(1.1); }
+}
+
+@keyframes glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px var(--secondary), 0 0 10px var(--secondary);
+  }
+  50% { 
+    box-shadow: 0 0 20px var(--secondary), 0 0 30px var(--secondary);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* Clases de animación */
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-dice {
+  animation: diceRoll 0.5s ease-in-out;
+}
+
+/* ===== EFECTOS HOVER AVANZADOS ===== */
+.card {
+  background: var(--card-bg);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px var(--card-shadow);
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--card-shadow);
+  border-color: var(--secondary);
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+/* Botones de dados interactivos */
+.btn-dice {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--card-bg);
+  border: 2px solid var(--secondary);
+  border-radius: var(--border-radius);
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  font-family: 'Cinzel', 'Georgia', serif;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px var(--card-shadow);
+}
+
+.btn-dice::before {
+  content: '🎲';
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  transition: left var(--transition-speed) ease;
+  opacity: 0;
+}
+
+.btn-dice:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 8px 16px var(--card-shadow);
+  border-color: var(--d20-critical);
+}
+
+.btn-dice:hover::before {
+  left: 10px;
+  opacity: 1;
+}
+
+.btn-dice:active {
+  transform: scale(0.98) translateY(0);
+  animation: diceRoll 0.5s ease-in-out;
+}
+
+/* Enlaces con efecto subrayado */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  position: relative;
+  transition: color var(--transition-speed) ease;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  transition: width var(--transition-speed) ease;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+/* Bloques de estadísticas con hover */
+.stat-block {
+  background: var(--card-bg);
+  border: var(--border-width) solid var(--primary);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+}
+
+.stat-block:hover {
+  border-color: var(--d20-critical);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  transform: scale(1.02);
+}
+
+/* Valores de estadísticas animados */
+.stat-value {
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.stat-value:hover {
+  transform: scale(1.15);
+}
+
+.stat-positive {
+  color: var(--stat-boost);
+}
+
+.stat-positive:hover {
+  animation: glow 1s ease-in-out infinite;
+}
+
+.stat-negative {
+  color: var(--stat-penalty);
+}
+
+/* Notas y alertas con efecto */
+.note {
+  background: var(--accent);
+  color: var(--card-bg);
+  border-left: 5px solid var(--secondary);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  box-shadow: 0 2px 8px var(--card-shadow);
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.note::before {
+  content: '⚠';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  opacity: 0.2;
+  transition: all var(--transition-speed) ease;
+}
+
+.note:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px var(--card-shadow);
+}
+
+.note:hover::before {
+  opacity: 0.4;
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* Elementos que entran en viewport */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Efecto de brillo en elementos críticos */
+.critical-highlight {
+  position: relative;
+  animation: glow 2s ease-in-out infinite;
 }
