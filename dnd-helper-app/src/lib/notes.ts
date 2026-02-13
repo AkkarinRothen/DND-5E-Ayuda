@@ -35,7 +35,7 @@ export type NoteCategory =
 export interface Note extends NoteMetadata {
   id: string;
   content?: string;
-  slug?: string;
+  slug: string;
 }
 
 export interface NotesByCategory {
